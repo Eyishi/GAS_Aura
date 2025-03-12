@@ -6,6 +6,8 @@ Build
 
 .vscode
 .vs
+.vsconfig
+*.idea
 *.VC.db
 *.opensdf
 *.opendb
@@ -14,3 +16,4 @@ Build
 *.suo
 *.xcodeproj
 *.xcworkspace
+*.Intermediate
