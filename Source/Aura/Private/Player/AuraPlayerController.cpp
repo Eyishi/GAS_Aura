@@ -43,9 +43,9 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	const FRotator YawRotation = FRotator(0, Rotation.Yaw, 0);
 
 	//获取向前得方向
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	//获取向右的方向
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	if (APawn* ControllerPawn = GetPawn<APawn>())
 	{
