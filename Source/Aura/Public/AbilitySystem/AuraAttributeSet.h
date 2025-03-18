@@ -4,8 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "AbilitySystemComponent.h"
 #include "AuraAttributeSet.generated.h"
 
+/// 用于为属性添加访问器
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+	
 /**
  * 
  */
@@ -23,16 +31,20 @@ public:
 	/// 生命值
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Health,Category="Vital Attributes")
 	FGameplayAttributeData Health;
-
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health)
+	
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxHealth,Category="Vital Attributes")
 	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth)
 
 	/// 法力值
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Mana,Category="Vital Attributes")
 	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana)
 
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxMana,Category="Vital Attributes")
 	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana)
 	
 	UFUNCTION()
 	void OnRep_Health(FGameplayAttributeData OldHealth) const;
