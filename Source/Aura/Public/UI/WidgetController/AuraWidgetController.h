@@ -49,6 +49,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
+	/// 绑定回调
+	virtual void BindCallbacksToDependencies();
 protected:
 
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
