@@ -39,9 +39,25 @@ void AAuraEffectActor::ApplayEffectToTarget(AActor* TargetActor, TSubclassOf<UGa
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 {
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	{
+		ApplayEffectToTarget(TargetActor, InstantGamePlayEffectClass);
+	}
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	{
+		ApplayEffectToTarget(TargetActor, DurationGamePlayEffectClass);
+	}
 }
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 {
+	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplayEffectToTarget(TargetActor, InstantGamePlayEffectClass);
+	}
+	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplayEffectToTarget(TargetActor, DurationGamePlayEffectClass);
+	}
 }
 
