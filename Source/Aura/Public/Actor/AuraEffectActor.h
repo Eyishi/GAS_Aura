@@ -79,4 +79,7 @@ protected:
 	/** 无限游戏效果 */
 
 	TMap<FActiveGameplayEffectHandle,UAbilitySystemComponent*> ActiveEffectHandles;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Applied Effects")
+	float ActorLevel = 1.0f;
 };
