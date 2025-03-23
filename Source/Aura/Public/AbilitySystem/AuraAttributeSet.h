@@ -26,6 +26,9 @@ public:
 	UAuraAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	/// 属性预处理，防止 血量和蓝量超过最大值
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
 	/// 标记为需要复制，接到游戏的客户端都将接收到这个属性的变化。OnRep_Health
 	/// 是一个回调函数，当 Health 属性被复制时，这个函数将被调用。
 	/// 生命值
