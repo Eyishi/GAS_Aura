@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
+#include "GameplayEffectTypes.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
@@ -50,29 +52,31 @@ protected:
 	bool bDestoryOnEffectRemoval = false;
 	
 	/** 即时游戏效果 */
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Instant")
 	TSubclassOf<UGameplayEffect> InstantGamePlayEffectClass;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Instant")
 	EEffectApplicationPolicy InstantEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 	/** 即时游戏效果 */
 
 	/** 持续游戏效果 */
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Duration")
 	TSubclassOf<UGameplayEffect> DurationGamePlayEffectClass;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Duration")
 	EEffectApplicationPolicy DurationEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 	/** 持续游戏效果 */
 
 	/** 无限游戏效果 */
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Infinite")
 	TSubclassOf<UGameplayEffect> InfiniteGamePlayEffectClass;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Infinite")
 	EEffectApplicationPolicy InfiniteEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Applied Effects|Infinite")
 	EEffectRemovalPolicy InfiniteRemovalPolicy = EEffectRemovalPolicy::RemoveOnOverlap;
 	/** 无限游戏效果 */
+
+	TMap<FActiveGameplayEffectHandle,UAbilitySystemComponent*> ActiveEffectHandles;
 };
