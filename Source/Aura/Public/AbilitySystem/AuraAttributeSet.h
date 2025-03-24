@@ -26,7 +26,7 @@ struct FEffectProperties
 	UAbilitySystemComponent* SourceASC = nullptr;
 
 	UPROPERTY()
-	AActor* SourceActor;
+	AActor* SourceActor = nullptr;
 	
 	UPROPERTY()
 	AController* SourceController = nullptr;
@@ -38,7 +38,7 @@ struct FEffectProperties
 	UAbilitySystemComponent* TargetASC = nullptr;
 
 	UPROPERTY()
-	AActor* TargetActor;
+	AActor* TargetActor = nullptr;
 	
 	UPROPERTY()
 	AController* TargetController = nullptr;
