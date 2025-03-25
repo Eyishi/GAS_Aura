@@ -64,5 +64,15 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
-	
+
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& DataTableRowTag);
 };
+
+template <typename T>
+T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& DataTableRowTag)
+{
+	if (DataTable == nullptr) return nullptr;
+	T* Row = DataTable->FindRow<T>(DataTableRowTag.GetTagName(), TEXT(""));
+	return Row;
+}

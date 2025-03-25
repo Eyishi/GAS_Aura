@@ -38,6 +38,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			{
 				const FString Msg = FString::Printf(TEXT("Asset Tag: %s"), *AssetTag.ToString());
 				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue,Msg);
+
+				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, AssetTag);
 			}
 		}
 	);
