@@ -13,10 +13,6 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 {
 	FGameplayTagContainer TagsContainer;
 	EffectSpec.GetAllAssetTags(TagsContainer);
-	for (const FGameplayTag& AssetTag : TagsContainer)
-	{
-		// TODO 广播到 HUD widget controller
-		const FString Msg = FString::Printf(TEXT("Asset Tag: %s"), *AssetTag.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue,Msg);
-	}
+
+	EffectAssetTags.Broadcast(TagsContainer);
 }
