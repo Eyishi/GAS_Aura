@@ -26,7 +26,7 @@ public:
 		return AttributeSet;
 	}
 	
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()

@@ -63,7 +63,30 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	
+
+
+	/**
+	 * Primary Attributes
+	 */
+
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Strength,Category="Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Strength)
+
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Intelligence,Category="Primary Attributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Intelligence)
+
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Resilience,Category="Primary Attributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Resilience)
+
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Vigor,Category="Primary Attributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Vigor)
+	/**
+	 * Vital Attributes
+	 */
 	/// 标记为需要复制，接到游戏的客户端都将接收到这个属性的变化。OnRep_Health
 	/// 是一个回调函数，当 Health 属性被复制时，这个函数将被调用。
 	/// 生命值
@@ -95,6 +118,18 @@ public:
 	
 	UFUNCTION()
 	void OnRep_MaxMana(FGameplayAttributeData OldMaxMana) const;
+
+	UFUNCTION()
+	void OnRep_Strength(FGameplayAttributeData OldStrength) const;
+
+	UFUNCTION()
+	void OnRep_Intelligence(FGameplayAttributeData OldIntelligence) const;
+
+	UFUNCTION()
+	void OnRep_Resilience(FGameplayAttributeData OldResilience) const;
+
+	UFUNCTION()
+	void OnRep_Vigor(FGameplayAttributeData OldVigor) const;
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
