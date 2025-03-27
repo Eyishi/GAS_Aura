@@ -9,8 +9,6 @@
 #include "GameFramework/Character.h"
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(25.0f);
-	InitMana(25.0f);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
