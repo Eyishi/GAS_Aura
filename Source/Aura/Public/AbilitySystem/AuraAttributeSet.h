@@ -68,7 +68,7 @@ public:
 	/**
 	 * Primary Attributes
 	 */
-
+	
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Strength,Category="Primary Attributes")
 	FGameplayAttributeData Strength;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Strength)
