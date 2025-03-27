@@ -84,6 +84,58 @@ public:
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Vigor,Category="Primary Attributes")
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Vigor)
+
+	/**
+	 * Secondary Attributes
+	 */
+	
+	/// 防御力
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_Armor, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Armor)
+
+	/// 抗甲穿透
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_ArmorPenetration, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArmorPenetration)
+
+	/// 格挡几率
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_BlockChance, Category = "Secondary Attributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, BlockChance)
+
+	/// 暴击几率
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_CriticalHitChance, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitChance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitChance)
+
+	/// 暴击伤害
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_CriticalHitDamage, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitDamage)
+
+	/// 暴击抗性
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_CriticalHitResistance, Category = "Secondary Attributes")
+	FGameplayAttributeData CriticalHitResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitResistance)
+
+	/// 生命回复
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_HealthRegeneration, Category = "Secondary Attributes")
+	FGameplayAttributeData HealthRegeneration;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, HealthRegeneration)
+
+	/// 法力回复
+	UPROPERTY(BlueprintReadOnly, Replicated = OnRep_ManaRegeneration, Category = "Secondary Attributes")
+	FGameplayAttributeData ManaRegeneration;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ManaRegeneration)
+	
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxHealth,Category="Vital Attributes")
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth)
+
+	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxMana,Category="Vital Attributes")
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana)
 	/**
 	 * Vital Attributes
 	 */
@@ -93,19 +145,11 @@ public:
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Health,Category="Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health)
-	
-	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxHealth,Category="Vital Attributes")
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth)
 
 	/// 法力值
 	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_Mana,Category="Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana)
-
-	UPROPERTY(BlueprintReadOnly,Replicated = OnRep_MaxMana,Category="Vital Attributes")
-	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana)
 	
 	UFUNCTION()
 	void OnRep_Health(FGameplayAttributeData OldHealth) const;
@@ -130,6 +174,30 @@ public:
 
 	UFUNCTION()
 	void OnRep_Vigor(FGameplayAttributeData OldVigor) const;
+
+	UFUNCTION()
+	void OnRep_Armor(FGameplayAttributeData OldArmor) const;
+
+	UFUNCTION()
+	void OnRep_ArmorPenetration(FGameplayAttributeData OldArmorPenetration) const;
+
+	UFUNCTION()
+	void OnRep_BlockChance(FGameplayAttributeData OldBlockChance) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitChance(FGameplayAttributeData OldCriticalHitChance) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitDamage(FGameplayAttributeData OldCriticalHitDamage) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitResistance(FGameplayAttributeData OldCriticalHitResistance) const;
+
+	UFUNCTION()
+	void OnRep_HealthRegeneration(FGameplayAttributeData OldHealthRegeneration) const;
+
+	UFUNCTION()
+	void OnRep_ManaRegeneration(FGameplayAttributeData OldManaRegeneration) const;
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
