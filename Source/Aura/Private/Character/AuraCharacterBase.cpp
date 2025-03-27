@@ -38,8 +38,9 @@ void AAuraCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> Gameplay
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
 	check(IsValid(ASC));
 	check(GameplayEffectClass);
-	const FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
-	FGameplayEffectSpecHandle GameplayEffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass,Level,ContextHandle);
+	FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle GameplayEffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass,Level,ContextHandle);
 	ASC->ApplyGameplayEffectSpecToTarget(*GameplayEffectSpecHandle.Data.Get(),ASC);
 }
 
