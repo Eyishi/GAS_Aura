@@ -47,6 +47,10 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 	
 };
+/// 函数指针,通用的T是一种函数类型 相当于 ->  FGameplayAttribute(*)()
+// typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultTSDelegateUserPolicy>::FFuncPtr AttributeFuncPtr;
+template<typename T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultTSDelegateUserPolicy>::FFuncPtr;
 /**
  * 
  */
@@ -64,7 +68,9 @@ public:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-
+	/// FGameplayAttribute() 这里表示的不是一个类的实例，而是一种函数类型，例如 TStaticFuncPtr<float(int,float,int)>
+	TMap<FGameplayTag,TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+	
 	/**
 	 * Primary Attributes
 	 */
