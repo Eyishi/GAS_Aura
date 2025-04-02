@@ -2,7 +2,9 @@
 
 #include "Player/AuraPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Input/AuraInputComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -127,6 +129,9 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		FColor::Blue,
 		FString::Printf(TEXT("AbilityInputTagReleased: %s"), *InputTag.ToString())
 	);
+
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
@@ -137,4 +142,18 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		FColor::Green,
 		FString::Printf(TEXT("AbilityInputTagHeld: %s"), *InputTag.ToString())
 	);
+
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
+{
+	if (AuraAbilitySystemComponent == nullptr)
+	{
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		
+	}
+	return AuraAbilitySystemComponent;
 }
