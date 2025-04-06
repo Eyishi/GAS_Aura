@@ -28,7 +28,6 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility,false,CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
@@ -48,24 +47,10 @@ void AAuraPlayerController::CursorTrace()
 	 *5.都有效，但是指向一个对象
 	 *	  .不处理
 	 */
-	if (LastActor == nullptr )
+	if (LastActor != ThisActor)
 	{
-		if (ThisActor)
-		{
-			ThisActor->HighlightActor();
-		}
-	}
-	else
-	{
-		if (ThisActor == nullptr)
-		{
-			LastActor->UnHighlightActor();
-		}
-		else if (LastActor != ThisActor)
-		{
-			LastActor->UnHighlightActor();
-			ThisActor->HighlightActor();
-		}
+		if(LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->HighlightActor();
 	}
 }
 
@@ -131,20 +116,14 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
 	/// 这里 ，如果有目标thisTarget，则释放技能
 	if (bTargeting)
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
@@ -158,7 +137,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				 for (const FVector& Point : NavPath->PathPoints)
 				 {
 				 	Spline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
-				 	DrawDebugSphere(GetWorld(),Point,8.f,8,FColor::Green,false,5.f);
 				 }
 				// 把最后一个点设为目标点，防止一些未定义行为
 				CacheDestination = NavPath->PathPoints.Last();
@@ -174,28 +152,21 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
 	if (bTargeting)
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
 		FollowTime+= GetWorld()->GetDeltaSeconds();
-
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility,false,Hit))
+		
+		if (CursorHit.bBlockingHit)
 		{
-			CacheDestination = Hit.ImpactPoint;
+			CacheDestination = CursorHit.ImpactPoint;
 		}
 
 		if (APawn* ControllerPawn = GetPawn())
