@@ -61,10 +61,12 @@ private:
 	bool bAutoRunning = false;
 	bool bTargeting = false;
 
-	/// 自动运行的浮动
+	/// 自动运行的浮动(当前位置到目标位置的距离<=这个值就说明已经到目的地)
 	UPROPERTY(EditAnywhere)
 	float AutoRunAcceptanceRadius = 50.f;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	void AutoRun();
 };
