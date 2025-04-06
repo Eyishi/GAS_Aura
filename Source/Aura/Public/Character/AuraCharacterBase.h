@@ -36,6 +36,12 @@ protected:
 	UPROPERTY(EditAnywhere,Category= "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	///生成武器攻击特效的插槽名称
+	UPROPERTY(EditAnywhere,Category= "Combat")
+	FName WeaponTipSocketName;
+
+	virtual FVector GetCombatSocketLocation() override;
+	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
