@@ -5,6 +5,8 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
@@ -117,13 +119,6 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(
-		1,
-		3.f,
-		FColor::Red,
-		FString::Printf(TEXT("AbilityInputTagPressed: %s"), *InputTag.ToString())
-	);
-
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = ThisActor  ? true : false;
@@ -133,26 +128,47 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(
-		2,
-		3.f,
-		FColor::Blue,
-		FString::Printf(TEXT("AbilityInputTagReleased: %s"), *InputTag.ToString())
-	);
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
 
-	if (GetASC() == nullptr) return;
-	GetASC()->AbilityInputTagReleased(InputTag);
+	/// 这里 ，如果有目标thisTarget，则释放技能
+	if (bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		APawn* ControllerPawn = GetPawn();
+		if (FollowTime <=ShortPressThreshold && ControllerPawn)
+		{
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this,
+				GetPawn()->GetActorLocation(),CacheDestination))
+			{
+				 Spline->ClearSplinePoints();
+				 for (const FVector& Point : NavPath->PathPoints)
+				 {
+				 	Spline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
+				 	DrawDebugSphere(GetWorld(),Point,8.f,8,FColor::Green,false,5.f);
+				 }
+				bAutoRunning = true;
+			}
+			FollowTime = 0.f;
+			bTargeting = false;
+		}
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(
-		3,
-		3.f,
-		FColor::Green,
-		FString::Printf(TEXT("AbilityInputTagHeld: %s"), *InputTag.ToString())
-	);
-
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC())
