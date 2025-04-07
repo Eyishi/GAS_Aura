@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
-#include "Ability/AuraGameplayAbility.h"
+#include "AbilitySystem/Ability/AuraGameplayAbility.h"
 
 void UAuraAbilitySystemComponent::AbilityActorSet()
 {

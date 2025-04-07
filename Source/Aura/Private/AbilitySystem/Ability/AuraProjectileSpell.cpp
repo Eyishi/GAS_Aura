@@ -1,7 +1,7 @@
 // Eyishi
 
 
-#include "Ability/AuraProjectileSpell.h"
+#include "AbilitySystem/Ability/AuraProjectileSpell.h"
 
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
