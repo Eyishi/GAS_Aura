@@ -3,8 +3,10 @@
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
 
+#include "AbilitySystemComponent.h"
+
 UTargetDataUnderMouse* UTargetDataUnderMouse::TargetDataUnderMouse(UGameplayAbility* OwningAbility,
-	FName TaskInstanceName)
+                                                                   FName TaskInstanceName)
 {
 	UTargetDataUnderMouse* MyObj = NewAbilityTask<UTargetDataUnderMouse>(OwningAbility);
 	return MyObj;
@@ -12,11 +14,37 @@ UTargetDataUnderMouse* UTargetDataUnderMouse::TargetDataUnderMouse(UGameplayAbil
 
 void UTargetDataUnderMouse::Activate()
 {
-	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
-	if (PC)
+	bool bIsLocallyControlled = Ability->GetCurrentActorInfo()->IsLocallyControlled();
+	if (bIsLocallyControlled)
 	{
-		FHitResult HitResult;
-		PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
-		ValidData.Broadcast(HitResult.Location);
+		SendMouseCursorData();
+	}
+	else
+	{
+		//TODO 在服务器上，需要监听鼠标位置
+		
+	}
+}
+
+void UTargetDataUnderMouse::SendMouseCursorData()
+{
+	FScopedPredictionWindow ScopedPrediction(AbilitySystemComponent.Get());
+	
+	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
+	FHitResult HitResult;
+	PC->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
+
+	FGameplayAbilityTargetDataHandle DataHandle;
+	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
+	Data->HitResult = HitResult;
+	DataHandle.Add(Data);
+
+	/// 发送到服务器
+	AbilitySystemComponent->ServerSetReplicatedTargetData(GetAbilitySpecHandle(),GetActivationPredictionKey()
+		,DataHandle,FGameplayTag(),AbilitySystemComponent->ScopedPredictionKey);
+
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
 	}
 }
