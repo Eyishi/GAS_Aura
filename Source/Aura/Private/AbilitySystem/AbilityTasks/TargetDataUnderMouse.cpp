@@ -21,8 +21,16 @@ void UTargetDataUnderMouse::Activate()
 	}
 	else
 	{
-		//TODO 在服务器上，需要监听鼠标位置
-		
+		// 在服务器上，需要监听鼠标位置
+		const FGameplayAbilitySpecHandle SpecHandle = GetAbilitySpecHandle();
+		const FPredictionKey PredictionKey = GetActivationPredictionKey();
+		AbilitySystemComponent.Get()->AbilityTargetDataSetDelegate(SpecHandle,PredictionKey).
+			AddUObject(this, &UTargetDataUnderMouse::OnTargetDataReplicateCallback);
+		const bool bCallDelegate = AbilitySystemComponent.Get()->CallReplicatedTargetDataDelegatesIfSet(SpecHandle,PredictionKey);
+		if (!bCallDelegate)
+		{
+			SetWaitingOnRemotePlayerData();
+		}
 	}
 }
 
@@ -43,6 +51,16 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 	AbilitySystemComponent->ServerSetReplicatedTargetData(GetAbilitySpecHandle(),GetActivationPredictionKey()
 		,DataHandle,FGameplayTag(),AbilitySystemComponent->ScopedPredictionKey);
 
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
+}
+
+void UTargetDataUnderMouse::OnTargetDataReplicateCallback(const FGameplayAbilityTargetDataHandle& DataHandle,
+	FGameplayTag ActivationTag)
+{
+	AbilitySystemComponent->ConsumeClientReplicatedTargetData(GetAbilitySpecHandle(),GetActivationPredictionKey());
 	if (ShouldBroadcastAbilityTaskDelegates())
 	{
 		ValidData.Broadcast(DataHandle);
