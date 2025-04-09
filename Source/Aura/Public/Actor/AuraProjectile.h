@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffect.h"
+#include "GameplayEffectTypes.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Niagara/Classes/NiagaraSystem.h"
@@ -22,6 +24,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	UPROPERTY(BlueprintReadWrite,meta=(ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
