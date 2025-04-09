@@ -81,6 +81,8 @@ void AAuraPlayerController::SetupInputComponent()
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 
 	AuraInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Started, this, &ThisClass::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Completed, this, &ThisClass::ShiftReleased);
 	AuraInputComponent->BindAbilityAction(InputConfig, this, &ThisClass::AbilityInputTagPressed,
 		&ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagHeld);
 }
@@ -116,16 +118,14 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
+		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 		return;
 	}
 
-	/// 这里 ，如果有目标thisTarget，则释放技能
-	if (bTargeting)
-	{
-		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
-	}
-	else
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+	
+	/// 这里 ，如果没有目标，并且没有 按下 shift 就移动
+	if (!bTargeting && !bShiftKeyDown)
 	{
 		APawn* ControllerPawn = GetPawn();
 		if (FollowTime <=ShortPressThreshold && ControllerPawn)
@@ -133,11 +133,11 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this,
 				GetPawn()->GetActorLocation(),CacheDestination))
 			{
-				 Spline->ClearSplinePoints();
-				 for (const FVector& Point : NavPath->PathPoints)
-				 {
-				 	Spline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
-				 }
+				Spline->ClearSplinePoints();
+				for (const FVector& Point : NavPath->PathPoints)
+				{
+					Spline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
+				}
 				// 把最后一个点设为目标点，防止一些未定义行为
 				CacheDestination = NavPath->PathPoints.Last();
 				bAutoRunning = true;
@@ -156,7 +156,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
+	if (bTargeting || bShiftKeyDown)
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}

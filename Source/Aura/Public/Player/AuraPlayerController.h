@@ -36,6 +36,13 @@ private:
 	UPROPERTY(EditAnywhere,Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere,Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	void ShiftPressed()  { bShiftKeyDown = true;};
+	void ShiftReleased() { bShiftKeyDown = false;};
+	bool bShiftKeyDown = false;
+	
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
 	FHitResult CursorHit;
@@ -60,6 +67,7 @@ private:
 	float FollowTime = 0.f;
 	float ShortPressThreshold = 0.5f;
 	bool bAutoRunning = false;
+	/// 是否有目标，怪物，点地板就是没有目标
 	bool bTargeting = false;
 
 	/// 自动运行的浮动(当前位置到目标位置的距离<=这个值就说明已经到目的地)
