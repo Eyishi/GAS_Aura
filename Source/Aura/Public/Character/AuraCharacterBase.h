@@ -60,7 +60,7 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 
 	/// 初始化Primary、Secondary、Vital属性
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 	
 	void AddCharacterAbilities();
 	
