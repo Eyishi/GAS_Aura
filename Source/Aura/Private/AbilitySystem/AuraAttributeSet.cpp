@@ -88,6 +88,16 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
 	}
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.0f);
+		if (LocalIncomingDamage> .0f)
+		{
+			float NewHealth = GetHealth()-LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth,0.0f,GetMaxHealth()));
+		}
+	}
 }
 
 void UAuraAttributeSet::OnRep_Health(FGameplayAttributeData OldHealth) const
