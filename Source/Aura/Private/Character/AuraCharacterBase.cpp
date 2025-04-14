@@ -41,7 +41,7 @@ void AAuraCharacterBase::Die()
 	MulticastHandleDeath();
 }
 
-void AAuraCharacterBase::MulticastHandleDeath_Implementation()
+void AAuraCharacterBase:: MulticastHandleDeath_Implementation()
 {
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
