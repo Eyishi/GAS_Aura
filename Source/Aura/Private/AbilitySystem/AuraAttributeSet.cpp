@@ -96,6 +96,16 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		{
 			float NewHealth = GetHealth()-LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth,0.0f,GetMaxHealth()));
+
+			const bool bFatal = NewHealth <= .0f;
+
+			/// 这里执行 受到伤害 的技能
+			if(!bFatal)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }
