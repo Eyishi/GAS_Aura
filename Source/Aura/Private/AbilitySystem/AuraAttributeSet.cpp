@@ -8,6 +8,8 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
+
 UAuraAttributeSet::UAuraAttributeSet()
 {
 	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
@@ -100,7 +102,16 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			const bool bFatal = NewHealth <= .0f;
 
 			/// 这里执行 受到伤害 的技能
-			if(!bFatal)
+			/// 致命伤害
+			if (bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter);
+				if (CombatInterface)
+				{
+					CombatInterface->Die();
+				}
+			}
+			else
 			{
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
