@@ -52,11 +52,15 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 		
 		FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),EffectContextHandle);
 
-		// 根据gameplaytag 分配造成的伤害 ，gameplayeffect 的 tag 为damage时，分配数值为50
+		// 根据gameplaytag 分配造成的伤害 
 		FAuraGameplayTags AuraGameplayTags = FAuraGameplayTags::Get();
-		
-		const float ScaleDamage = Damage.GetValueAtLevel(GetAbilityLevel());
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,AuraGameplayTags.Damage,ScaleDamage);
+
+		/// 遍历当前 Ability的 伤害标签 对应的伤害，为EffectSpecHandle分配伤害
+		for (const auto& DamageType : DamageTypes)
+		{
+			const float ScaleDamage = DamageType.Value.GetValueAtLevel(GetAbilityLevel());
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,DamageType.Key,ScaleDamage);
+		}
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 		
 		Projectile->FinishSpawning(SpawnTransform);

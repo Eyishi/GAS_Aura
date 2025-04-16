@@ -65,7 +65,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.TargetTags = TargetTags;
 
 	//按照 其他属性获取伤害集
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	/// 按照 tag 获取伤害值
+	float Damage = .0f;
+	for (FGameplayTag DamageType : FAuraGameplayTags::Get().DamageTypes)
+	{
+		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageType);
+		Damage += DamageTypeValue;
+	}
 
 	// 捕捉blockchance
 	float TargetBlockChance = 0.f;
