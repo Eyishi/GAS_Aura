@@ -21,8 +21,6 @@ void UBTService_FindNearestPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	AActor* ClosestActor = nullptr;
 	for (AActor* Actor : ActorsWithTag)
 	{
-		GEngine->AddOnScreenDebugMessage(2, .5f, FColor::Red, *Actor->GetName());
-
 		if (IsValid(OwningPaw) && IsValid(Actor))
 		{
 			float DistanceToActor = OwningPaw->GetDistanceTo(Actor);
