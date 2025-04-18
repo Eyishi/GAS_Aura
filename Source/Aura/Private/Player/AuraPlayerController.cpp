@@ -151,9 +151,13 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				{
 					Spline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
 				}
-				// 把最后一个点设为目标点，防止一些未定义行为
-				CacheDestination = NavPath->PathPoints.Last();
-				bAutoRunning = true;
+				if
+				(NavPath->PathPoints.Num() > 0)
+				{
+					// 把最后一个点设为目标点，防止一些未定义行为
+					CacheDestination = NavPath->PathPoints.Last();
+					bAutoRunning = true;
+				}
 			}
 			FollowTime = 0.f;
 			bTargeting = false;
