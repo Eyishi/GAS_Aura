@@ -26,4 +26,10 @@ public:
 	virtual void HighlightActor() = 0;
 	/// 取消高光显示
 	virtual void UnHighlightActor() = 0;
+
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	void SetCombatTarget(AActor* InCombatTarget);
+
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	AActor* GetCombatTarget() const;
 };
