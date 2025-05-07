@@ -175,7 +175,14 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("CombatSocket.RightHand"),
 		FString("右手攻击插槽")
 		);
+	AuraGameplayTags.CombatSocket_Tail = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CombatSocket.Tail"),
+		FString("尾部攻击插槽")
+		);
 
+	/**
+	 *	4种攻击的动画
+	 */
 	AuraGameplayTags.Montage_Attack_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.1"),
 		FString("攻击1")
